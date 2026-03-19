@@ -23,7 +23,7 @@ npm install
 npm run dev
 ```
 
-Abre [http://localhost:3000](http://localhost:3000) en tu navegador.
+Abre [http://localhost:3001](http://localhost:3001) en tu navegador.
 
 ## 🏗️ Construcción y Despliegue
 
@@ -33,23 +33,70 @@ npm run build
 npm start
 ```
 
-### Despliegue en Vercel (Recomendado)
-```bash
-# Instalar Vercel CLI
-npm install -g vercel
+### Despliegue Automático con GitHub Actions ⭐ (Recomendado)
 
-# Desplegar
-vercel
+El proyecto incluye un **pipeline CI/CD completo** con 4 fases:
+
+**Pipeline Automático**:
+1. 🏗️ **Build & Test** - Valida que el código compile
+2. 📊 **Code Quality** - ESLint y análisis de código
+3. 🐳 **Docker Build** - Construye y publica imagen en GitHub Registry
+4. 🚀 **Deploy** - Despliega a producción con Podman (solo rama `main`)
+
+**Configuración inicial** (solo una vez): Ver guía completa en **[GITHUB-ACTIONS-SETUP.md](GITHUB-ACTIONS-SETUP.md)**
+
+Pasos rápidos:
+1. Instalar Podman y podman-compose en el servidor
+2. Generar clave SSH y copiarla al servidor
+3. Agregar secretos en GitHub (SERVER_HOST, SERVER_USER, SSH_PRIVATE_KEY, SERVER_PORT)
+4. ¡Push y listo! El pipeline ejecuta automáticamente 🚀
+
+**Uso diario**:
+```bash
+git add .
+git commit -m "Nueva funcionalidad"
+git push  # El pipeline CI/CD se ejecuta automáticamente
+
+# Ver progreso en: https://github.com/TuUsuario/brajossoft/actions
 ```
 
-### Despliegue en Netlify
-```bash
-# Instalar Netlify CLI
-npm install -g netlify-cli
+**Branches**:
+- `main` → Build, Quality, Docker Build, **Deploy a producción**
+- `dev` → Build, Quality, Docker Build (sin deploy)
+- `testqa` → Build, Quality, Docker Build (sin deploy)
 
-# Desplegar
-netlify deploy --prod
+**Tags de versión**:
+```bash
+git tag v1.0.0
+git push origin v1.0.0  # Despliega versión específica
 ```
+
+Ver documentación completa en: **[GITHUB-ACTIONS-SETUP.md](GITHUB-ACTIONS-SETUP.md)** y **[PIPELINE.md](PIPELINE.md)**
+
+### Despliegue Manual en Servidor con Nginx
+
+Si prefieres desplegar manualmente, sigue la guía en **[NGINX-SETUP.md](NGINX-SETUP.md)**
+
+Resumen:
+```bash
+# Instalación automática
+./install.sh
+
+# O manual
+npm install && npm run build
+sudo systemctl restart brajossoft
+```
+
+### Despliegue con Docker/Podman
+```bash
+# Con Podman (recomendado)
+podman-compose up -d
+
+# O con Docker
+docker-compose up -d
+```
+
+Ver guía completa: **[DEPLOYMENT.md](DEPLOYMENT.md)** y **[PODMAN.md](PODMAN.md)**
 
 ## 📁 Estructura del Proyecto
 
