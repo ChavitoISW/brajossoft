@@ -166,20 +166,32 @@ jobs:
           [ -f ~/.bashrc ] && source ~/.bashrc
           
           # Directorio de deployment
-          DEPLOY_DIR="/var/www/brajossoft"
-          
-          echo "📂 Navegando a $DEPLOY_DIR..."
-          cd "$DEPLOY_DIR"
+          DEPLOY_DIR="$HOME/brajossoft"
           
           # Verificar que es un repositorio git
           if [ -d ".git" ]; then
-            echo "📥 Actualizando código desde GitHub..."
+            echo "📂 Repositorio existe, actualizando código..."
+            cd "$DEPLOY_DIR"
             git fetch origin
             git checkout ${{ github.ref_name }}
             git pull origin ${{ github.ref_name }}
           else
-            echo "❌ No es un repositorio git válido"
-            exit 1
+             # Si existe algo, eliminarlo
+            if [ -d "$DEPLOY_DIR" ]; then
+              echo "⚠️  Eliminando directorio anterior..."
+              rm -rf "$DEPLOY_DIR"
+            fi
+
+            echo "📁 Creando directorio $DEPLOY_DIR..."
+            mkdir -p "$DEPLOY_DIR"
+
+            echo "📥 Clonando repositorio..."
+            git clone https://github.com/${{ github.repository }}.git "$DEPLOY_DIR"
+            cd "$DEPLOY_DIR"
+            git checkout ${{ github.ref_name }}
+            
+            echo "📁 Creando directorios necesarios..."
+            mkdir -p database backups
           fi
           
           # Detener contenedores actuales
