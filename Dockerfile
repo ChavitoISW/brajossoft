@@ -8,6 +8,7 @@ WORKDIR /app/brajossoft
 # Copiar archivos de dependencias
 COPY package*.json ./
 COPY next.config.js ./
+COPY jsconfig.json ./
 
 RUN npm install && \
     npm cache clean --force
