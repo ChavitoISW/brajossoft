@@ -11,7 +11,7 @@ function About() {
         animateStats()
         setHasAnimated(true)
       }
-    }, { threshold: 0.5 })
+    }, { threshold: 0.2, rootMargin: '0px 0px -100px 0px' })
 
     if (statsRef.current) {
       observer.observe(statsRef.current)
@@ -24,26 +24,24 @@ function About() {
     const duration = 2000
     const steps = 60
     const increment = duration / steps
+    const startTime = Date.now()
 
-    let yearsCount = 0
-    let projectsCount = 0
-    let satisfactionCount = 0
-
-    const interval = setInterval(() => {
-      yearsCount += 5 / steps
-      projectsCount += 50 / steps
-      satisfactionCount += 100 / steps
+    const animate = () => {
+      const elapsed = Date.now() - startTime
+      const progress = Math.min(elapsed / duration, 1)
 
       setStats({
-        years: Math.min(Math.round(yearsCount), 5),
-        projects: Math.min(Math.round(projectsCount), 50),
-        satisfaction: Math.min(Math.round(satisfactionCount), 100)
+        years: Math.round(5 * progress),
+        projects: Math.round(50 * progress),
+        satisfaction: Math.round(100 * progress)
       })
 
-      if (yearsCount >= 5) {
-        clearInterval(interval)
+      if (progress < 1) {
+        requestAnimationFrame(animate)
       }
-    }, increment)
+    }
+
+    requestAnimationFrame(animate)
   }
 
   return (
@@ -64,15 +62,15 @@ function About() {
             </p>
             <div className="about-stats" ref={statsRef}>
               <div className="stat-item">
-                <div className="stat-number">5+</div>
+                <div className="stat-number">{stats.years}+</div>
                 <div className="stat-label">Años de experiencia</div>
               </div>
               <div className="stat-item">
-                <div className="stat-number">50+</div>
+                <div className="stat-number">{stats.projects}+</div>
                 <div className="stat-label">Proyectos completados</div>
               </div>
               <div className="stat-item">
-                <div className="stat-number">100%</div>
+                <div className="stat-number">{stats.satisfaction}%</div>
                 <div className="stat-label">Clientes satisfechos</div>
               </div>
             </div>
@@ -95,7 +93,7 @@ function About() {
                   </div>
                   <div className="code-line code-indent">
                     <span className="code-keyword">return</span>{' '}
-                    <span className="code-string">&quot;innovation&quot;</span>
+                    <span className="code-string">'innovation'</span>
                     <span>;</span>
                   </div>
                   <div className="code-line">
