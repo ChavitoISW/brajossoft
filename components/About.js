@@ -64,15 +64,15 @@ function About() {
             </p>
             <div className="about-stats" ref={statsRef}>
               <div className="stat-item">
-                <div className="stat-number">{stats.years}+</div>
+                <div className="stat-number">5+</div>
                 <div className="stat-label">Años de experiencia</div>
               </div>
               <div className="stat-item">
-                <div className="stat-number">{stats.projects}+</div>
+                <div className="stat-number">50+</div>
                 <div className="stat-label">Proyectos completados</div>
               </div>
               <div className="stat-item">
-                <div className="stat-number">{stats.satisfaction}%</div>
+                <div className="stat-number">100%</div>
                 <div className="stat-label">Clientes satisfechos</div>
               </div>
             </div>
@@ -95,7 +95,7 @@ function About() {
                   </div>
                   <div className="code-line code-indent">
                     <span className="code-keyword">return</span>{' '}
-                    <span className="code-string">'innovation'</span>
+                    <span className="code-string">&quot;innovation&quot;</span>
                     <span>;</span>
                   </div>
                   <div className="code-line">
