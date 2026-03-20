@@ -2,6 +2,7 @@ version: '3.8'
 
 services:
   brajos-soft:
+    image: brajossoft:latest
     build:
       context: .
       dockerfile: Dockerfile

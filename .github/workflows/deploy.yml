@@ -239,9 +239,9 @@ jobs:
           echo "🏗️ Construyendo imagen de BraJos Soft (sin caché)..."
           podman build --no-cache -t brajossoft:latest -f Dockerfile .
           
-          # Iniciar contenedores
+          # Iniciar contenedores (forzar recreación)
           echo "🚀 Iniciando contenedores de BraJos Soft..."
-          $COMPOSE_CMD up -d
+          $COMPOSE_CMD up -d --force-recreate
           
           # Obtener ID del nuevo contenedor
           NEW_CONTAINER=$(podman ps -q --filter "name=brajos-soft" | head -n1)
