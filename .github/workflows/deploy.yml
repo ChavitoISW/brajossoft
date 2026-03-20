@@ -230,12 +230,14 @@ jobs:
             echo "No se encontraron contenedores previos de BraJos Soft"
           fi
           
-          # Limpiar imagen anterior del proyecto (opcional)
+          # Limpiar imagen anterior del proyecto
+          echo "🧹 Limpiando imágenes y caché anterior..."
           podman rmi brajossoft:latest 2>/dev/null || true
+          podman system prune -f 2>/dev/null || true
           
-          # Rebuild imagen con Podman
-          echo "🏗️ Construyendo imagen de BraJos Soft..."
-          podman build -t brajossoft:latest -f Dockerfile .
+          # Rebuild imagen con Podman (sin caché para asegurar actualización)
+          echo "🏗️ Construyendo imagen de BraJos Soft (sin caché)..."
+          podman build --no-cache -t brajossoft:latest -f Dockerfile .
           
           # Iniciar contenedores
           echo "🚀 Iniciando contenedores de BraJos Soft..."
