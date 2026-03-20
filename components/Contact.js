@@ -30,7 +30,7 @@ function Contact() {
               </div>
               <div className="contact-details">
                 <h3 className="contact-title">Teléfono</h3>
-                <p className="contact-text">+506 61000702</p>
+                <p className="contact-text">+506 62787954</p>
               </div>
             </div>
 

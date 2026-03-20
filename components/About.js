@@ -93,7 +93,7 @@ function About() {
                   </div>
                   <div className="code-line code-indent">
                     <span className="code-keyword">return</span>{' '}
-                    <span className="code-string">'innovation'</span>
+                    <span className="code-string">&apos;innovation&apos;</span>
                     <span>;</span>
                   </div>
                   <div className="code-line">
