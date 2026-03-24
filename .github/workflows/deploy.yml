@@ -165,11 +165,20 @@ jobs:
           # Cargar bashrc si existe
           [ -f ~/.bashrc ] && source ~/.bashrc
           
-          # Directorio de deployment
-          DEPLOY_DIR="$HOME/brajossoft"
+          # Directorio de deployment organizado
+          BASE_DIR="/opt/proyectos/brajossoft"
+          DEPLOY_DIR="$BASE_DIR/sitioWeb/brajossoft"
+          
+          # Crear directorio base si no existe
+          if [ ! -d "$BASE_DIR" ]; then
+            echo "📁 Creando directorio base de proyectos..."
+            sudo mkdir -p "$BASE_DIR"
+            sudo chown -R $USER:$USER "$BASE_DIR"
+            echo "✅ Directorio $BASE_DIR creado"
+          fi
           
           # Verificar que es un repositorio git
-          if [ -d ".git" ]; then
+          if [ -d "$DEPLOY_DIR/.git" ]; then
             echo "📂 Repositorio existe, actualizando código..."
             cd "$DEPLOY_DIR"
             git fetch origin
