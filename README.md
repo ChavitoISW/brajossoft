@@ -1,53 +1,113 @@
 # BraJos Soft - Sitio Web Corporativo
 
-Sitio web profesional desarrollado con Next.js para BraJos Soft, empresa especializada en desarrollo de sistemas informáticos a la medida y diseño web.
+Sitio web profesional desarrollado con Next.js para BraJos Soft, empresa especializada en desarrollo de software a medida.
 
-## 🚀 Tecnologías
+## 🚀 Stack Tecnológico
 
-- **Next.js 14** - Framework de React con SSR
-- **React 18** - Librería de UI
-- **CSS3** - Estilos personalizados
-- **Responsive Design** - Diseño adaptable a todos los dispositivos
+- **Next.js 16.2** - Framework React con Turbopack
+- **React 19** - Librería UI
+- **Podman** - Container runtime
+- **GitHub Actions** - CI/CD automático
+- **Nginx** - Reverse proxy
 
-## 📦 Instalación
+## 🌐 Sitio en Producción
+
+- **URL**: https://brajossoft.com
+- **Puerto**: 3001 (interno)
+- **Servidor**: `/opt/proyectos/brajossoft`
+
+## 💻 Desarrollo Local
 
 ```bash
 # Instalar dependencias
 npm install
-```
 
-## 💻 Desarrollo
-
-```bash
-# Iniciar servidor de desarrollo
+# Modo desarrollo
 npm run dev
-```
 
-Abre [http://localhost:3001](http://localhost:3001) en tu navegador.
-
-## 🏗️ Construcción y Despliegue
-
-### Construcción local
-```bash
+# Build producción
 npm run build
 npm start
 ```
 
-### Despliegue Automático con GitHub Actions ⭐ (Recomendado)
+Abre [http://localhost:3001](http://localhost:3001)
 
-El proyecto incluye un **pipeline CI/CD completo** con 4 fases:
+## 🚀 Deployment Automático
 
-**Pipeline Automático**:
-1. 🏗️ **Build & Test** - Valida que el código compile
-2. 📊 **Code Quality** - ESLint y análisis de código
-3. 🐳 **Docker Build** - Construye y publica imagen en GitHub Registry
-4. 🚀 **Deploy** - Despliega a producción con Podman (solo rama `main`)
+**Pipeline CI/CD con GitHub Actions**:
+- Push a `main` → Deploy automático a producción
+- Push a `dev`/`testqa` → Build y quality checks
 
-**Configuración inicial** (solo una vez): Ver guía completa en **[GITHUB-ACTIONS-SETUP.md](GITHUB-ACTIONS-SETUP.md)**
+**Configuración del Servidor (primera vez)**:
+```bash
+# 1. Instalar Podman
+sudo apt install -y podman
+pip3 install --user podman-compose
 
-Pasos rápidos:
-1. Instalar Podman y podman-compose en el servidor
-2. Generar clave SSH y copiarla al servidor
+# 2. Crear estructura
+sudo mkdir -p /opt/proyectos
+sudo chown -R $USER:$USER /opt/proyectos
+
+# 3. Configurar GitHub Secrets
+# - SERVER_HOST: IP del servidor
+# - SERVER_USER: Usuario SSH
+# - SERVER_PORT: Puerto SSH (22)
+# - SSH_PRIVATE_KEY: Clave privada completa
+```
+
+**Nginx Reverse Proxy**:
+```nginx
+server {
+    listen 80;
+    server_name brajossoft.com www.brajossoft.com;
+    
+    location / {
+        proxy_pass http://localhost:3001;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_cache_bypass $http_upgrade;
+    }
+}
+```
+
+## 📁 Estructura del Proyecto
+
+```
+brajossoft/
+├── .github/workflows/    # CI/CD pipeline
+├── app/                  # Páginas Next.js
+├── components/           # Componentes React
+├── public/               # Assets estáticos
+├── styles/               # CSS global
+├── docker-compose.yml    # Orquestación Podman
+└── Dockerfile           # Imagen de producción
+```
+
+## 🐳 Container Management
+
+```bash
+# Ver contenedores
+podman ps --filter "name=brajos-soft"
+
+# Ver logs
+podman logs brajos-soft-web
+
+# Reiniciar
+cd /opt/proyectos/brajossoft
+podman-compose restart
+
+# Rebuild manual
+podman build --no-cache -t brajossoft:latest .
+podman-compose up -d --force-recreate
+```
+
+## 📝 Contacto
+
+- **Email**: contacto@brajossoft.com
+- **Teléfono**: +506 6100 0702
+- **Ubicación**: Alajuela, Costa Rica
 3. Agregar secretos en GitHub (SERVER_HOST, SERVER_USER, SSH_PRIVATE_KEY, SERVER_PORT)
 4. ¡Push y listo! El pipeline ejecuta automáticamente 🚀
 

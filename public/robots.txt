@@ -1,0 +1,12 @@
+# robots.txt para BraJos Soft
+
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://brajossoft.com/sitemap.xml
+
+# Bloquear archivos innecesarios
+Disallow: /api/
+Disallow: /_next/
+Disallow: /node_modules/
