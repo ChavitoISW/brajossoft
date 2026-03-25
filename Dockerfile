@@ -1,9 +1,9 @@
 # Etapa 1: Dependencias
 FROM node:20-alpine 
 
-RUN mkdir -p /app/brajossoft
+RUN mkdir -p /app/
 
-WORKDIR /app/brajossoft
+WORKDIR /app/
 
 # Copiar archivos de dependencias
 COPY package*.json ./
